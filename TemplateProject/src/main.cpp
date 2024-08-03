@@ -8,7 +8,9 @@ class ExampleLayer : public ApplicationLayer
 public:
 	virtual void OnAttach() override {}
 	virtual void OnDetach() override {}
+	virtual void OnUpdate(Timestep ts) override {}
 	virtual void OnRender() override {}
+	virtual void OnOverlayRender() override {}
 
 	void OnEvent(Event& e) override
 	{
@@ -26,8 +28,8 @@ private:
 class ExampleApp : public Application
 {
 public:
-	ExampleApp(const ApplicationSpecification& spec)
-		: Application(spec)
+	ExampleApp(Impl<ApplicationSpecification> spec)
+		: Application(std::move(spec))
 	{
 		PushLayer<ExampleLayer>();
 	}
@@ -37,10 +39,10 @@ public:
 	}
 };
 
-Impl<Application> CreateApplication(int argc, char** argv)
+Application* CreateApplication(int argc, char** argv)
 {
-	ApplicationSpecification spec;
-	spec.name = "ExampleApp";
+	Impl<ApplicationSpecification> spec = MakeImpl<ApplicationSpecification>();
+	spec->name = "ExampleApp";
 
-	return MakeImpl<ExampleApp>(spec);
+	return new ExampleApp(std::move(spec));
 }
