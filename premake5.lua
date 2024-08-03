@@ -23,6 +23,8 @@ workspace "scpp-template"
  	filter "configurations:ARM64"
 		architecture "ARM64"
 
+VULKAN_SDK = os.getenv("VULKAN_SDK")
+
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
