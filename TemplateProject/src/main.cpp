@@ -3,7 +3,7 @@
 
 using namespace slc;
 
-class ExampleLayer : public ILayer
+class ExampleLayer : public ApplicationLayer
 {
 public:
 	virtual void OnAttach() override {}
@@ -16,7 +16,7 @@ public:
 		e.Dispatch<MouseButtonPressedEvent>(SLC_BIND_EVENT_FUNC(OnMouseButtonPressed));
 	}
 
-	LISTENING_EVENTS(KeyPressed, MouseButtonPressed)
+	LISTENING_EVENTS(EventType::KeyPressed, EventType::MouseButtonPressed)
 
 private:
 	bool OnKeyPressed(KeyPressedEvent& event) { return false; }
