@@ -3,6 +3,7 @@ import os
 import platform
 import subprocess
 import shutil
+import configparser
 from unicodedata import name
 import requests
 from pathlib import Path
@@ -26,8 +27,30 @@ def ReplaceProjectName(projectName):
     filedata = filedata.replace('TemplateProject', projectName)
     with open('{name}/premake5.lua'.format(name=projectName), 'w') as premakeProj:
         premakeProj.write(filedata)
+        
+def CheckForStreamlineSubmodule():
+    gitmodules = Path(".gitmodules")
+    if not gitmodules.exists():
+        return False
+        
+    parser = configparser.ConfigParser()
+    parser.optionxform = str  # preserve case
+    parser.read(gitmodules)
+    
+    for section in parser.sections():
+        if section.startswith('submodule '):
+            sub_path = parser.get(section, 'path', fallback=None)
+            if sub_path == path:
+                return True
+    return False
     
 class ProjectConfiguration:
+
+    @classmethod
+    def SetupStreamlineDependency(cls):
+        if not CheckForStreamlineSubmodule():
+            subprocess.call(['git', 'submodule', 'add', 'https://github.com/amayesingnathan/streamline-cpp.git', 'dependencies/streamline-cpp'])
+        subprocess.call(['git', 'submodule', 'update', '--init', '--recursive'])
 
     @classmethod
     def CheckProjectConfig(cls):
@@ -41,5 +64,3 @@ class ProjectConfiguration:
     def SetupProject(cls, projectName):        
         os.rename('TemplateProject', projectName)
         ReplaceProjectName(projectName)
-        subprocess.call(['git', 'submodule', 'add', 'https://github.com/amayesingnathan/streamline-cpp.git', '{name}/dependencies/streamline-cpp'.format(name=projectName)])
-        subprocess.call(['git', 'submodule', 'update', '--init', '--recursive'])

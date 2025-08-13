@@ -13,6 +13,8 @@ def main():
     premakeInstalled = PremakeRequirements.Validate()
             
     VulkanRequirements.Validate()
+    
+    ProjectConfig.SetupStreamlineDependency()
 
     if (not projectConfigured):
         namespace = str(input("Enter the top level name for the repo...\n")).strip()
