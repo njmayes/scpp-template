@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Change working directory to the root of the engine.
+# Change working directory to the root of the project.
 pushd "$(dirname ${BASH_SOURCE[0]})/../.."
 
 if [ $# -eq 0 ] ; then

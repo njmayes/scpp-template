@@ -1,5 +1,5 @@
 workspace "scpp-template"
-    startproject "TemplateProject"
+    startproject "<ProjectName>"
 
     configurations 
     { 
@@ -28,7 +28,6 @@ VULKAN_SDK = os.getenv("VULKAN_SDK")
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["TemplateProject"] 	= "%{wks.location}/TemplateProject/src"
 IncludeDir["StreamlineCore"] 	= "%{wks.location}/dependencies/streamline-cpp/StreamlineCore/src"
 IncludeDir["glfw"] 	            = "%{wks.location}/dependencies/streamline-cpp/StreamlineCore/dependencies/glfw/include"
 IncludeDir["glad"] 	            = "%{wks.location}/dependencies/streamline-cpp/StreamlineCore/dependencies/glad/include"
@@ -57,8 +56,6 @@ Library["SPIRV_Tools_Debug"] 		= "%{LibraryDir.VulkanSDK}/SPIRV-Toolsd.lib"
 Library["ShaderC_Release"] 			= "%{LibraryDir.VulkanSDK}/shaderc_shared.lib"
 Library["SPIRV_Cross_Release"] 		= "%{LibraryDir.VulkanSDK}/spirv-cross-core.lib"
 Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.lib"
-
-include "TemplateProject"
 
 group "Dependencies"
 

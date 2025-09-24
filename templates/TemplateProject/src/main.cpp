@@ -28,7 +28,7 @@ private:
 class ExampleApp : public Application
 {
 public:
-	ExampleApp(Impl<ApplicationSpecification> spec)
+	ExampleApp(Box<ApplicationSpecification> spec)
 		: Application(std::move(spec))
 	{
 		PushLayer<ExampleLayer>();
@@ -41,7 +41,7 @@ public:
 
 Application* CreateApplication(int argc, char** argv)
 {
-	Impl<ApplicationSpecification> spec = MakeImpl<ApplicationSpecification>();
+	Box<ApplicationSpecification> spec = MakeBox<ApplicationSpecification>();
 	spec->name = "ExampleApp";
 
 	return new ExampleApp(std::move(spec));

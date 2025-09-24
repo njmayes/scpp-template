@@ -1,7 +1,7 @@
-project "TemplateProject"
+project "<ProjectName>"
     language "C++"
     cppdialect "C++latest"
-	kind "ConsoleApp"
+	kind "<AppType>"
 		
     targetdir 	("%{wks.location}/bin/%{prj.name}/" .. outputDir)
     objdir 		("%{wks.location}/obj/%{prj.name}/" .. outputDir)
@@ -19,7 +19,7 @@ project "TemplateProject"
 
     includedirs
     {
-        "%{IncludeDir.TemplateProject}",
+        "%{IncludeDir.<ProjectName>}",
         "%{IncludeDir.StreamlineCore}",
         "%{IncludeDir.glm}",
         "%{IncludeDir.imgui}",
