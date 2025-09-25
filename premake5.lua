@@ -4,7 +4,8 @@ workspace "scpp-template"
     configurations 
     { 
         "Debug",
-        "Release"
+        "Release",
+		"Profile",
     }
     
     platforms
@@ -24,11 +25,17 @@ workspace "scpp-template"
 		architecture "ARM64"
 
 VULKAN_SDK = os.getenv("VULKAN_SDK")
+OPENSSL_ROOT = os.getenv("OPENSSL_ROOT_DIR")
 
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
+
+LibraryDir = {}
+Library = {}
+
 IncludeDir["StreamlineCore"] 	= "%{wks.location}/dependencies/streamline-cpp/StreamlineCore/src"
+IncludeDir["asio"] 	            = "%{wks.location}/dependencies/streamline-cpp/StreamlineCore/dependencies/asio/include"
 IncludeDir["glfw"] 	            = "%{wks.location}/dependencies/streamline-cpp/StreamlineCore/dependencies/glfw/include"
 IncludeDir["glad"] 	            = "%{wks.location}/dependencies/streamline-cpp/StreamlineCore/dependencies/glad/include"
 IncludeDir["glm"] 				= "%{wks.location}/dependencies/streamline-cpp/StreamlineCore/dependencies/glm"
@@ -40,26 +47,19 @@ IncludeDir["pfd"] 				= "%{wks.location}/dependencies/streamline-cpp/StreamlineC
 IncludeDir["stb_image"] 		= "%{wks.location}/dependencies/streamline-cpp/StreamlineCore/dependencies/stb_image"
 IncludeDir["VulkanSDK"] 		= "%{VULKAN_SDK}/Include"
 
-LibraryDir = {}
-LibraryDir["VulkanSDK"] 		 	= "%{VULKAN_SDK}/Lib"
+Library["asio"] 				= "asio"
+Library["glad"] 				= "glad"
+Library["glfw"] 				= "glfw"
+Library["imgui"] 				= "imgui"
 
-Library = {}
-
-Library["Vulkan"] 					= "%{LibraryDir.VulkanSDK}/vulkan-1.lib"
-Library["VulkanUtils"] 				= "%{LibraryDir.VulkanSDK}/VkLayer_utils.lib"
-
-Library["ShaderC_Debug"] 			= "%{LibraryDir.VulkanSDK}/shaderc_sharedd.lib"
-Library["SPIRV_Cross_Debug"] 		= "%{LibraryDir.VulkanSDK}/spirv-cross-cored.lib"
-Library["SPIRV_Cross_GLSL_Debug"]	= "%{LibraryDir.VulkanSDK}/spirv-cross-glsld.lib"
-Library["SPIRV_Tools_Debug"] 		= "%{LibraryDir.VulkanSDK}/SPIRV-Toolsd.lib"
-
-Library["ShaderC_Release"] 			= "%{LibraryDir.VulkanSDK}/shaderc_shared.lib"
-Library["SPIRV_Cross_Release"] 		= "%{LibraryDir.VulkanSDK}/spirv-cross-core.lib"
-Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.lib"
+filter "system:windows"
+    LibraryDir["VulkanSDK"] 	= "%{VULKAN_SDK}/Lib"
+    IncludeDir["OpenSSL"]       = "%{OPENSSL_ROOT}/include"
 
 group "Dependencies"
 
 include "dependencies/streamline-cpp/StreamlineCore"
+include "dependencies/streamline-cpp/StreamlineCore/dependencies/asio"
 include "dependencies/streamline-cpp/StreamlineCore/dependencies/glfw"
 include "dependencies/streamline-cpp/StreamlineCore/dependencies/glad"
 include "dependencies/streamline-cpp/StreamlineCore/dependencies/imgui"
